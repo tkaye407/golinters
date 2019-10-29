@@ -2,11 +2,12 @@ package main
 
 import (
 	"flag"
-	"linters/deferfor"
-	"linters/errresp"
-	"linters/mustcheck"
-	"linters/printf"
-	"linters/println"
+
+	"github.com/edaniels/golinters/deferfor"
+	"github.com/edaniels/golinters/errresp"
+	"github.com/edaniels/golinters/mustcheck"
+	"github.com/edaniels/golinters/printf"
+	"github.com/edaniels/golinters/println"
 
 	"golang.org/x/tools/go/analysis/unitchecker"
 )

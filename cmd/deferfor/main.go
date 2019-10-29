@@ -1,7 +1,7 @@
 package main
 
 import (
-	"linters/deferfor"
+	"github.com/edaniels/golinters/deferfor"
 
 	"golang.org/x/tools/go/analysis/singlechecker"
 )

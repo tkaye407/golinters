@@ -1,7 +1,7 @@
 package main
 
 import (
-	"linters/errresp"
+	"github.com/edaniels/golinters/errresp"
 
 	"golang.org/x/tools/go/analysis/singlechecker"
 )

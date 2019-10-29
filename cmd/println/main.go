@@ -1,7 +1,7 @@
 package main
 
 import (
-	"linters/println"
+	"github.com/edaniels/golinters/println"
 
 	"golang.org/x/tools/go/analysis/singlechecker"
 )

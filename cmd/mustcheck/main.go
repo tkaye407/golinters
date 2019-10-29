@@ -1,7 +1,7 @@
 package main
 
 import (
-	"linters/mustcheck"
+	"github.com/edaniels/golinters/mustcheck"
 
 	"golang.org/x/tools/go/analysis/singlechecker"
 )
