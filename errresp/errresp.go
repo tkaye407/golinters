@@ -44,19 +44,39 @@ func run(pass *analysis.Pass) (interface{}, error) {
 
 		// find surrounding block scopes
 		var outerIsExpr bool
+		var lastExprAt int
 		for i := len(stack) - 1; i >= 0; i-- {
 			stackElem := stack[i]
-			switch t := stackElem.(type) {
-			case *ast.BlockStmt:
-				if len(t.List) < 1 {
+			switch stackElem.(type) {
+			case *ast.BlockStmt, *ast.CaseClause:
+				var stmts []ast.Stmt
+				switch t := stackElem.(type) {
+				case *ast.BlockStmt:
+					stmts = t.List
+				case *ast.CaseClause:
+					stmts = t.Body
+				}
+				if len(stmts) < 1 {
 					continue
 				}
-				switch stmt := t.List[len(t.List)-1].(type) {
-				case *ast.ReturnStmt:
+				switch stmt := stmts[len(stmts)-1].(type) {
+				case *ast.ReturnStmt, *ast.IfStmt, *ast.SwitchStmt:
 					if outerIsExpr {
 						allCond := true
+						// find which stmt our expr is in and start there
+						var afterExprStmt bool
 					loop:
-						for _, blockStmt := range t.List[:len(t.List)-1] {
+						for _, blockStmt := range stmts[:len(stmts)-1] {
+							if !afterExprStmt {
+								ast.Inspect(blockStmt, func(child ast.Node) bool {
+									if child == ce {
+										afterExprStmt = true
+										return false
+									}
+									return true
+								})
+								continue
+							}
 							switch blockStmt.(type) {
 							case *ast.IfStmt:
 							default:
@@ -71,16 +91,18 @@ func run(pass *analysis.Pass) (interface{}, error) {
 					outerIsExpr = false
 				case *ast.ExprStmt:
 					if stmt.X == n {
+						lastExprAt = i
 						outerIsExpr = true
 					}
 					continue
 				default:
+					outerIsExpr = false
 					continue
 				}
-				if len(t.List) < 2 {
+				if len(stmts) < 2 {
 					continue
 				}
-				es, ok := t.List[len(t.List)-2].(*ast.ExprStmt)
+				es, ok := stmts[len(stmts)-2].(*ast.ExprStmt)
 				if !ok {
 					continue
 				}
@@ -88,6 +110,11 @@ func run(pass *analysis.Pass) (interface{}, error) {
 					return false
 				}
 			}
+		}
+
+		// if last thing we saw was expr, check if we are closest to a func decl
+		if outerIsExpr && lastExprAt == 2 {
+			return false
 		}
 
 		pass.Reportf(se.Sel.Pos(), "ErrorResponse() not immediately followed by return")
