@@ -28,6 +28,15 @@ func run(pass *analysis.Pass) (interface{}, error) {
 	}
 
 	inspect.Preorder(nodeFilter, func(n ast.Node) {
+		// TODO: set via config
+		if f := pass.Fset.File(n.Pos()); f != nil &&
+			(strings.HasSuffix(f.Name(), "_test.go") ||
+				strings.Contains(f.Name(), "/cmd/") ||
+				strings.Contains(f.Name(), "/example") ||
+				strings.Contains(f.Name(), "/codegen/") ||
+				strings.Contains(f.Name(), "/migration/")) {
+			return
+		}
 		ce := n.(*ast.CallExpr)
 
 		se, ok := ce.Fun.(*ast.SelectorExpr)

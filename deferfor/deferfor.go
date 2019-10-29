@@ -6,6 +6,7 @@ import (
 	"go/ast"
 	"go/printer"
 	"go/token"
+	"strings"
 
 	"golang.org/x/tools/go/analysis"
 	"golang.org/x/tools/go/analysis/passes/inspect"
@@ -27,6 +28,11 @@ func run(pass *analysis.Pass) (interface{}, error) {
 	}
 
 	inspect.WithStack(nodeFilter, func(n ast.Node, push bool, stack []ast.Node) bool {
+		// TODO: set via config
+		if f := pass.Fset.File(n.Pos()); f != nil && strings.HasSuffix(f.Name(), "_test.go") {
+			return false
+		}
+
 		ds := n.(*ast.DeferStmt)
 
 		// check if defer occurs within an immediate for before we encounter a function
