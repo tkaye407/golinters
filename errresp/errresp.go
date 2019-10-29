@@ -43,26 +43,54 @@ func run(pass *analysis.Pass) (interface{}, error) {
 		// does immediately.
 
 		// find surrounding block scopes
-		for _, stackElem := range stack {
+		var outerIsExpr bool
+		for i := len(stack) - 1; i >= 0; i-- {
+			stackElem := stack[i]
 			switch t := stackElem.(type) {
 			case *ast.BlockStmt:
-				if len(t.List) < 2 {
+				if len(t.List) < 1 {
 					continue
 				}
-				if _, ok := t.List[len(t.List)-1].(*ast.ReturnStmt); !ok {
+				switch stmt := t.List[len(t.List)-1].(type) {
+				case *ast.ReturnStmt:
+					if outerIsExpr {
+						allCond := true
+					loop:
+						for _, blockStmt := range t.List[:len(t.List)-1] {
+							switch blockStmt.(type) {
+							case *ast.IfStmt:
+							default:
+								allCond = false
+								break loop
+							}
+						}
+						if allCond {
+							return false
+						}
+					}
+					outerIsExpr = false
+				case *ast.ExprStmt:
+					if stmt.X == n {
+						outerIsExpr = true
+					}
+					continue
+				default:
+					continue
+				}
+				if len(t.List) < 2 {
 					continue
 				}
 				es, ok := t.List[len(t.List)-2].(*ast.ExprStmt)
 				if !ok {
 					continue
 				}
-				if es.X == n {
+				if !outerIsExpr && es.X == n {
 					return false
 				}
 			}
 		}
 
-		pass.Reportf(se.Sel.Pos(), "ErrorResponse() not followed by return")
+		pass.Reportf(se.Sel.Pos(), "ErrorResponse() not immediately followed by return")
 		return false
 	})
 
