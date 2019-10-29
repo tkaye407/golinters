@@ -14,7 +14,7 @@ import (
 )
 
 var Analyzer = &analysis.Analyzer{
-	Name:     "println",
+	Name:     "printf",
 	Doc:      "reports various fmt.(Fp|P)rintf* usages",
 	Run:      run,
 	Requires: []*analysis.Analyzer{inspect.Analyzer},
