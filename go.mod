@@ -1,4 +1,4 @@
-module linters
+module github.com/edaniels/golinters
 
 go 1.13
 
