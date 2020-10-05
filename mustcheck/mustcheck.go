@@ -31,8 +31,9 @@ func run(pass *analysis.Pass) (interface{}, error) {
 	inspect.WithStack(nodeFilter, func(n ast.Node, push bool, stack []ast.Node) bool {
 		// TODO: set via config
 		if f := pass.Fset.File(n.Pos()); f != nil &&
-			(strings.HasSuffix(f.Name(), "_test.go") ||
-				strings.Contains(f.Name(), "utils/test")) {
+			(strings.HasSuffix(f.Name(), "_test.go") || 
+			 strings.HasSuffix(f.Name(), "testutils.go") || 
+			 strings.Contains(f.Name(), "utils/test")) {
 			return false
 		}
 		ce := n.(*ast.CallExpr)
