@@ -33,6 +33,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 			(strings.HasSuffix(f.Name(), "_test.go") ||
 				strings.Contains(f.Name(), "/cmd/") ||
 				strings.Contains(f.Name(), "/example") ||
+				strings.Contains(f.Name(), "/samples") ||
 				strings.Contains(f.Name(), "/codegen/") ||
 				strings.Contains(f.Name(), "/migration/")) {
 			return
