@@ -1,4 +1,4 @@
-// Package printf defines an Analyzer that reports varous printf usages
+// Package printf defines an Analyzer that reports various printf usages
 package printf
 
 import (

@@ -6,6 +6,7 @@ import (
 	"github.com/edaniels/golinters/mustcheck"
 	"github.com/edaniels/golinters/printf"
 	"github.com/edaniels/golinters/println"
+	"github.com/edaniels/golinters/uselessf"
 
 	"golang.org/x/tools/go/analysis/unitchecker"
 )
@@ -17,5 +18,6 @@ func main() {
 		mustcheck.Analyzer,
 		deferfor.Analyzer,
 		errresp.Analyzer,
+		uselessf.Analyzer,
 	)
 }
