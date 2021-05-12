@@ -36,11 +36,6 @@ func run(pass *analysis.Pass) (interface{}, error) {
 			return
 		}
 
-		i, ok := se.X.(*ast.Ident)
-		if !ok {
-			return
-		}
-
 		sel := se.Sel.String()
 		switch sel {
 		case "DPanicf", "Debugf", "Errorf", "Infof", "Panicf", "Warnf", "Printf":
@@ -49,7 +44,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 		}
 
 		if len(ce.Args) == 1 {
-			if i.String() != "fmt" && strings.HasPrefix(se.Sel.String(), "Errorf") {
+			if i, ok := se.X.(*ast.Ident); ok && i.String() != "fmt" && strings.HasPrefix(se.Sel.String(), "Errorf") {
 				pass.Reportf(se.Sel.Pos(), "uesless fmt.Errorf usage found; use errors.New instead")
 				return
 			}
