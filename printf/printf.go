@@ -1,4 +1,4 @@
-// Package printf defines an Analyzer that reports varous printf usages
+// Package printf defines an Analyzer that reports various printf usages
 package printf
 
 import (
@@ -33,8 +33,10 @@ func run(pass *analysis.Pass) (interface{}, error) {
 			(strings.HasSuffix(f.Name(), "_test.go") ||
 				strings.Contains(f.Name(), "/cmd/") ||
 				strings.Contains(f.Name(), "/example") ||
+				strings.Contains(f.Name(), "/samples") ||
 				strings.Contains(f.Name(), "/codegen/") ||
-				strings.Contains(f.Name(), "/migration/")) {
+				strings.Contains(f.Name(), "/migration/") ||
+				strings.Contains(f.Name(), "/cli/")) {
 			return
 		}
 		ce := n.(*ast.CallExpr)
