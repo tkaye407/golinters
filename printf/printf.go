@@ -35,7 +35,8 @@ func run(pass *analysis.Pass) (interface{}, error) {
 				strings.Contains(f.Name(), "/example") ||
 				strings.Contains(f.Name(), "/samples") ||
 				strings.Contains(f.Name(), "/codegen/") ||
-				strings.Contains(f.Name(), "/migration/")) {
+				strings.Contains(f.Name(), "/migration/") ||
+				strings.Contains(f.Name(), "/cli/")) {
 			return
 		}
 		ce := n.(*ast.CallExpr)
