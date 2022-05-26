@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/edaniels/golinters/uselessf"
+	"github.com/mongodb-forks/golinters/uselessf"
 
 	"golang.org/x/tools/go/analysis/singlechecker"
 )

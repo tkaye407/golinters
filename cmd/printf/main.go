@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/edaniels/golinters/printf"
+	"github.com/mongodb-forks/golinters/printf"
 
 	"golang.org/x/tools/go/analysis/singlechecker"
 )

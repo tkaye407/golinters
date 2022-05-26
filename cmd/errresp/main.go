@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/edaniels/golinters/errresp"
+	"github.com/mongodb-forks/golinters/errresp"
 
 	"golang.org/x/tools/go/analysis/singlechecker"
 )
