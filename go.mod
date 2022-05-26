@@ -1,4 +1,4 @@
-module github.com/edaniels/golinters
+module github.com/mongodb-forks/golinters
 
 go 1.13
 
