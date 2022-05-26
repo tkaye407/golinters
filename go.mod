@@ -1,6 +1,6 @@
 module github.com/mongodb-forks/golinters
 
-go 1.13
+go 1.17
 
 require (
 	github.com/fatih/camelcase v1.0.0
